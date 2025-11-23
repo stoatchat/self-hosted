@@ -103,9 +103,38 @@ services:
 
   # Web App
   web:
-    image: ghcr.io/revoltchat/client:master
-    restart: always
+    #image: ghcr.io/stoatchat/client:main
+    image: ghcr.io/flash1232/client:pr-2
+    ports:
+      - "8080:8080"
     env_file: .env.web
+    environment:
+      NODE_ENV: production
+      DOCKER_ENV: "true"
+    depends_on:
+      api:
+        condition: service_started
+    develop:
+      watch:
+        - action: sync+exec
+          path: ./conf/nginx.conf
+          target: /etc/nginx/conf.d/default.conf
+          exec:
+            command: nginx -s reload
+    deploy:
+      resources:
+        limits:
+          memory: "${PROD_MEMORY_LIMIT:-2G}"
+          cpus: "${PROD_CPU_LIMIT:-1.0}"
+        reservations:
+          memory: "${PROD_MEMORY_RESERVATION:-512M}"
+          cpus: "${PROD_CPU_RESERVATION:-0.25}"
+    security_opt:
+      - no-new-privileges:true
+    read_only: true
+    tmpfs:
+      - /tmp
+    restart: always
 
   # File server
   autumn:

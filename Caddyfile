@@ -34,5 +34,5 @@
 		}
 	}
 
-	reverse_proxy http://web:5000
+	reverse_proxy http://web:8080
 }
