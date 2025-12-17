@@ -119,6 +119,21 @@ Your system is now ready to proceed with installation, but before we continue, y
 
 Your domain (or a subdomain) should point to the server's IP (A and AAAA records) or CNAME to the hostname provided.
 
+### Quick Start
+
+To install Stoat quickly, you can use the automated installation script:
+
+```bash
+git clone https://github.com/stoatchat/self-hosted
+cd self-hosted
+chmod +x install.sh
+./install.sh
+```
+
+### Manual Installation
+
+If you prefer to install manually, follow the steps below.
+
 Next, we must install the required dependencies:
 
 ```bash
