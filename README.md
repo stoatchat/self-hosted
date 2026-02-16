@@ -2,12 +2,12 @@
 <h1>
   Stoat Self-Hosted
   
-  [![Stars](https://img.shields.io/github/stars/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/stargazers)
-  [![Forks](https://img.shields.io/github/forks/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/network/members)
-  [![Pull Requests](https://img.shields.io/github/issues-pr/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/pulls)
-  [![Issues](https://img.shields.io/github/issues/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/issues)
-  [![Contributors](https://img.shields.io/github/contributors/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/graphs/contributors)
-  [![License](https://img.shields.io/github/license/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/blob/main/LICENSE)
+  [![Stars](https://img.shields.io/github/stars/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/stargazers)
+  [![Forks](https://img.shields.io/github/forks/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/network/members)
+  [![Pull Requests](https://img.shields.io/github/issues-pr/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/pulls)
+  [![Issues](https://img.shields.io/github/issues/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/issues)
+  [![Contributors](https://img.shields.io/github/contributors/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/graphs/contributors)
+  [![License](https://img.shields.io/github/license/stoatchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/stoatchat/self-hosted/blob/main/LICENSE)
 </h1>
 Self-hosting Stoat using Docker
 </div>
@@ -23,7 +23,7 @@ This repository contains configurations and instructions that can be used for de
 > A list of security advisories is [provided at the bottom](#security-advisories).
 
 > [!NOTE]
-> Please consult _[What can I do with Stoat, and how do I self-host?](https://developers.revolt.chat/faq.html#admonition-what-can-i-do-with-revolt-and-how-do-i-self-host)_ on our developer site for information about licensing and brand use.
+> Please consult _[What can I do with Stoat and how do I self-host?](https://developers.stoat.chat/faq)_ on our developer site for information about licensing and brand use.
 
 ## Table of Contents
 
@@ -47,7 +47,7 @@ To get started, find yourself a suitable server to deploy onto, we recommend sta
 >
 > **We've partnered with Hostinger to bring you a 20% discount off VPS hosting!**
 >
-> 👉 https://www.hostinger.com/vps-hosting?REFERRALCODE=REVOLTCHAT
+> 👉 https://www.hostinger.com/vps-hosting?REFERRALCODE=stoatchat
 >
 > We recommend using the _KVM 2_ plan at minimum!\
 > Our testing environment for self-hosted currently sits on a KVM 2 instance, and we are happy to assist with issues.
@@ -138,7 +138,7 @@ apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docke
 Now, we can pull in the configuration for Stoat:
 
 ```bash
-git clone https://github.com/revoltchat/self-hosted stoat
+git clone https://github.com/stoatchat/self-hosted stoat
 cd stoat
 ```
 
@@ -149,7 +149,7 @@ chmod +x ./generate_config.sh
 ./generate_config.sh your.domain
 ```
 
-You can find [more options here](https://github.com/revoltchat/backend/blob/stable/crates/core/config/Revolt.toml), some noteworthy configuration options:
+You can find [more options here](https://github.com/stoatchat/stoatchat/blob/stable/crates/core/config/Revolt.toml), some noteworthy configuration options:
 
 - Email verification
 - Captcha
@@ -184,7 +184,7 @@ Pull the latest version of this repository:
 git pull
 ```
 
-Check if your configuration file is correct by opening [the reference config file](https://github.com/revoltchat/backend/blob/df074260196f5ed246e6360d8e81ece84d8d9549/crates/core/config/Revolt.toml) and your `Revolt.toml` to compare changes.
+Check if your configuration file is correct by opening [the reference config file](https://github.com/stoatchat/stoatchat/blob/df074260196f5ed246e6360d8e81ece84d8d9549/crates/core/config/Revolt.toml) and your `Revolt.toml` to compare changes.
 
 Then pull all the latest images:
 
@@ -210,7 +210,7 @@ Prerequisites before continuing:
 Clone this repository.
 
 ```bash
-git clone https://github.com/revoltchat/self-hosted stoat
+git clone https://github.com/stoatchat/self-hosted stoat
 cd stoat
 ```
 
@@ -222,7 +222,7 @@ Create `.env.web` and download `Revolt.toml`, then modify them according to your
 ```bash
 echo "HOSTNAME=http://local.stoat.chat" > .env.web
 echo "REVOLT_PUBLIC_URL=http://local.stoat.chat/api" >> .env.web
-wget -O Revolt.toml https://raw.githubusercontent.com/revoltchat/backend/main/crates/core/config/Revolt.toml
+wget -O Revolt.toml https://raw.githubusercontent.com/stoatchat/stoatchat/main/crates/core/config/Revolt.toml
 ```
 
 Then start Stoat:
@@ -358,7 +358,7 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > ```
 
 > [!IMPORTANT]
-> If you deployed Stoat before [2023-04-21](https://github.com/revoltchat/backend/commit/32542a822e3de0fc8cc7b29af46c54a9284ee2de), you may have to flush your Redis database.
+> If you deployed Stoat before [2023-04-21](https://github.com/stoatchat/stoatchat/commit/32542a822e3de0fc8cc7b29af46c54a9284ee2de), you may have to flush your Redis database.
 >
 > ```bash
 > # for stock Redis and older KeyDB images:
@@ -427,7 +427,7 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 
 ## Security Advisories
 
-- (`2024-06-21`) [GHSA-f26h-rqjq-qqjq revoltchat/backend: Unrestricted account creation.](https://github.com/revoltchat/backend/security/advisories/GHSA-f26h-rqjq-qqjq)
+- (`2024-06-21`) [GHSA-f26h-rqjq-qqjq stoatchat/stoatchat: Unrestricted account creation.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-f26h-rqjq-qqjq)
 - (`2024-12-17`) [GHSA-7f9x-pm3g-j7p4 revoltchat/january: January service can call itself recursively, causing heavy load.](https://github.com/revoltchat/january/security/advisories/GHSA-7f9x-pm3g-j7p4)
-- (`2025-02-10`) [GHSA-8684-rvfj-v3jq revoltchat/backend: Webhook tokens are freely accessible for users with read permissions.](https://github.com/revoltchat/backend/security/advisories/GHSA-8684-rvfj-v3jq)
-- (`2025-02-10`) [GHSA-h7h6-7pxm-mc66 revoltchat/backend: Nearby message fetch requests can be crafted to fetch entire message history.](https://github.com/revoltchat/backend/security/advisories/GHSA-h7h6-7pxm-mc66)
+- (`2025-02-10`) [GHSA-8684-rvfj-v3jq stoatchat/stoatchat: Webhook tokens are freely accessible for users with read permissions.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-8684-rvfj-v3jq)
+- (`2025-02-10`) [GHSA-h7h6-7pxm-mc66 stoatchat/stoatchat: Nearby message fetch requests can be crafted to fetch entire message history.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-h7h6-7pxm-mc66)
