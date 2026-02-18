@@ -1,6 +1,6 @@
 <div align="center">
 <h1>
-  Revolt Self-Hosted
+  Stoat Self-Hosted
   
   [![Stars](https://img.shields.io/github/stars/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/stargazers)
   [![Forks](https://img.shields.io/github/forks/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/network/members)
@@ -9,20 +9,20 @@
   [![Contributors](https://img.shields.io/github/contributors/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/graphs/contributors)
   [![License](https://img.shields.io/github/license/revoltchat/self-hosted?style=flat-square&logoColor=white)](https://github.com/revoltchat/self-hosted/blob/main/LICENSE)
 </h1>
-Self-hosting Revolt using Docker
+Self-hosting Stoat using Docker
 </div>
 <br/>
 
-This repository contains configurations and instructions that can be used for deploying Revolt.
+This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
 > [!WARNING]
-> If you are updating an instance from before November 28, 2024, please see the [notices section](#notices) at the bottom of this README!
+> If you are updating an instance from before November 28, 2024, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
 > A list of security advisories is [provided at the bottom](#security-advisories).
 
 > [!NOTE]
-> Please consult _[What can I do with Revolt, and how do I self-host?](https://developers.revolt.chat/faq.html#admonition-what-can-i-do-with-revolt-and-how-do-i-self-host)_ on our developer site for information about licensing and brand use.
+> Please consult _[What can I do with Stoat, and how do I self-host?](https://developers.revolt.chat/faq.html#admonition-what-can-i-do-with-revolt-and-how-do-i-self-host)_ on our developer site for information about licensing and brand use.
 
 > [!NOTE]
 > amd64 builds are not currently available for the web client.
@@ -31,6 +31,7 @@ This repository contains configurations and instructions that can be used for de
 > This guide does not include working voice channels ([#138](https://github.com/revoltchat/self-hosted/pull/138#issuecomment-2762682655)). A [rework](https://github.com/revoltchat/backend/issues/313) is currently in progress.
 
 ## Table of Contents
+
 - [Deployment](#deployment)
 - [Updating](#updating)
 - [Advanced Deployment](#advanced-deployment)
@@ -137,11 +138,11 @@ apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
-Now, we can pull in the configuration for Revolt:
+Now, we can pull in the configuration for Stoat:
 
 ```bash
-git clone https://github.com/revoltchat/self-hosted revolt
-cd revolt
+git clone https://github.com/revoltchat/self-hosted stoat
+cd stoat
 ```
 
 Generate a configuration file by running:
@@ -164,7 +165,7 @@ If you'd like to edit the configuration, just run:
 micro Revolt.toml
 ```
 
-Finally, we can start up Revolt. First, run it in the foreground with:
+Finally, we can start up Stoat. First, run it in the foreground with:
 
 ```bash
 docker compose up
@@ -212,8 +213,8 @@ Prerequisites before continuing:
 Clone this repository.
 
 ```bash
-git clone https://github.com/revoltchat/self-hosted revolt
-cd revolt
+git clone https://github.com/revoltchat/self-hosted stoat
+cd stoat
 ```
 
 Create `.env.web` and download `Revolt.toml`, then modify them according to your requirements.
@@ -222,12 +223,12 @@ Create `.env.web` and download `Revolt.toml`, then modify them according to your
 > The default configurations are intended exclusively for testing and will only work locally. If you wish to deploy to a remote server, you **must** edit the URLs in `.env.web` and `Revolt.toml`. Please reference the section below on [configuring a custom domain](#custom-domain).
 
 ```bash
-echo "HOSTNAME=http://local.revolt.chat" > .env.web
-echo "REVOLT_PUBLIC_URL=http://local.revolt.chat/api" >> .env.web
+echo "HOSTNAME=http://local.stoat.chat" > .env.web
+echo "REVOLT_PUBLIC_URL=http://local.stoat.chat/api" >> .env.web
 wget -O Revolt.toml https://raw.githubusercontent.com/revoltchat/backend/main/crates/core/config/Revolt.toml
 ```
 
-Then start Revolt:
+Then start Stoat:
 
 ```bash
 docker compose up -d
@@ -244,21 +245,22 @@ chmod +x ./generate_config.sh
 ./generate_config.sh your.domain
 ```
 
-Or alternatively do it manually, you will need to replace *all* instances of `local.revolt.chat` in `Revolt.toml` and `.env.web` to your chosen domain (here represented as `example.com`), like so:
+Or alternatively do it manually, you will need to replace _all_ instances of `local.stoat.chat` in `Revolt.toml` and `.env.web` to your chosen domain (here represented as `example.com`), like so:
 
 ```diff
 # .env.web
-- REVOLT_PUBLIC_URL=http://local.revolt.chat/api
+- REVOLT_PUBLIC_URL=http://local.stoat.chat/api
 + REVOLT_PUBLIC_URL=http://example.com/api
 ```
 
 ```diff
 # Revolt.toml
-- app = "http://local.revolt.chat"
+- app = "http://local.stoat.chat"
 + app = "http://example.com"
 ```
 
 In the case of `HOSTNAME`, you must strip the protocol prefix:
+
 ```diff
 # .env.web
 - HOSTNAME=http://example.com
@@ -284,7 +286,7 @@ You will likely also want to change the protocols to enable HTTPS:
 
 ### Placing Behind Another Reverse-Proxy or Another Port
 
-If you'd like to place Revolt behind another reverse proxy or on a non-standard port, you'll need to edit `compose.yml`. 
+If you'd like to place Stoat behind another reverse proxy or on a non-standard port, you'll need to edit `compose.yml`.
 
 Override the port definitions on `caddy`:
 
@@ -352,14 +354,14 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ## Notices
 
 > [!IMPORTANT]
-> If you deployed Revolt before [2022-10-29](https://github.com/minio/docs/issues/624#issuecomment-1296608406), you may have to tag the `minio` image release if it's configured in "fs" mode.
+> If you deployed Stoat before [2022-10-29](https://github.com/minio/docs/issues/624#issuecomment-1296608406), you may have to tag the `minio` image release if it's configured in "fs" mode.
 >
 > ```yml
 > image: minio/minio:RELEASE.2022-10-24T18-35-07Z
 > ```
 
 > [!IMPORTANT]
-> If you deployed Revolt before [2023-04-21](https://github.com/revoltchat/backend/commit/32542a822e3de0fc8cc7b29af46c54a9284ee2de), you may have to flush your Redis database.
+> If you deployed Stoat before [2023-04-21](https://github.com/revoltchat/backend/commit/32542a822e3de0fc8cc7b29af46c54a9284ee2de), you may have to flush your Redis database.
 >
 > ```bash
 > # for stock Redis and older KeyDB images:
@@ -403,15 +405,16 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 
 > [!IMPORTANT]
 > As of November 28, 2024, the following breaking changes have been applied:
+>
 > - Rename config section `api.vapid` -> `pushd.vapid`
 > - Rename config section `api.fcm` -> `pushd.fcm`
 > - Rename config section `api.apn` -> `pushd.apn`
 >
 > These will NOT automatically be applied to your config and must be changed/added manually.
-> 
 >
 > The following components have been added to the compose file:
-> - Added `rabbit` (RabbitMQ) and `pushd` (Revolt push daemon)
+>
+> - Added `rabbit` (RabbitMQ) and `pushd` (Stoat push daemon)
 
 ## Security Advisories
 

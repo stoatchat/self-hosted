@@ -1,4 +1,4 @@
-name: revolt
+name: stoat
 
 services:
   # MongoDB: Database
@@ -73,7 +73,7 @@ services:
 
   # API server
   api:
-    image: ghcr.io/revoltchat/server:20250210-1
+    image: ghcr.io/revoltchat/server:20250930-2
     depends_on:
       database:
         condition: service_healthy
@@ -89,7 +89,7 @@ services:
 
   # Events service
   events:
-    image: ghcr.io/revoltchat/bonfire:20250210-1
+    image: ghcr.io/revoltchat/bonfire:20250930-2
     depends_on:
       database:
         condition: service_healthy
@@ -109,7 +109,7 @@ services:
 
   # File server
   autumn:
-    image: ghcr.io/revoltchat/autumn:20250210-1
+    image: ghcr.io/revoltchat/autumn:20250930-2
     depends_on:
       database:
         condition: service_healthy
@@ -123,7 +123,16 @@ services:
 
   # Metadata and image proxy
   january:
-    image: ghcr.io/revoltchat/january:20250210-1
+    image: ghcr.io/revoltchat/january:20250930-2
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+    restart: always
+
+  # Tenor proxy
+  gifbox:
+    image: ghcr.io/revoltchat/gifbox:20250930-2
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -132,7 +141,7 @@ services:
 
   # Regular task daemon
   crond:
-    image: ghcr.io/revoltchat/crond:20250210-1-debug
+    image: ghcr.io/revoltchat/crond:20250930-2
     depends_on:
       database:
         condition: service_healthy
@@ -146,7 +155,7 @@ services:
 
   # Push notification daemon
   pushd:
-    image: ghcr.io/revoltchat/pushd:20250210-1
+    image: ghcr.io/revoltchat/pushd:20250930-2
     depends_on:
       database:
         condition: service_healthy

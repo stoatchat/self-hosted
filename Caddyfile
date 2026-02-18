@@ -27,5 +27,12 @@
 		}
 	}
 
+	route /gifbox* {
+		uri strip_prefix /gifbox
+		reverse_proxy http://gifbox:14706 {
+			header_down Location "^/" "/gifbox/"
+		}
+	}
+
 	reverse_proxy http://web:5000
 }
