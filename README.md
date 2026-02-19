@@ -307,6 +307,26 @@ Update the hostname used by the web server:
 
 You can now reverse proxy to <http://localhost:1234>.
 
+> [!NOTE]
+> If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets, which are required for Stoat.
+> Example:
+> ```
+> server_name stoat.example.com;
+>
+>  location / {
+>      allow all;
+>      proxy_pass http://localhost:1234;
+>      proxy_http_version 1.1;
+>      proxy_set_header Upgrade $http_upgrade;
+>      proxy_set_header Connection "upgrade";
+>      proxy_set_header Host $server_name;
+>      proxy_set_header X-Real-IP $remote_addr;
+>      proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+>      proxy_set_header X-Forwarded-Proto $scheme;
+>  }
+> ```
+
+
 ### Insecurely Expose the Database
 
 You can insecurely expose the database by adding a port definition:
