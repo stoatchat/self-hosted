@@ -26,6 +26,8 @@ echo "events = \"wss://$1/ws\"" >> Revolt.toml
 echo "autumn = \"https://$1/autumn\"" >> Revolt.toml
 echo "january = \"https://$1/january\"" >> Revolt.toml
 
+# livekit hostname
+echo "" >> Revolt.toml
 echo "[hosts.livekit]" >> Revolt.toml
 echo "worldwide = \"wss://$1/livekit\"" >> Revolt.toml
 

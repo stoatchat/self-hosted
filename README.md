@@ -18,6 +18,7 @@ This repository contains configurations and instructions that can be used for de
 > [!WARNING]
 > If you are updating an instance from before November 28, 2024, please consult the [notices section](#notices) at the bottom.
 > If you are updating an instance from before October 5, 2025, please consult the [notices section](#notices) at the bottom.
+> If you are updating an instance from before February 18, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
 > A list of security advisories is [provided at the bottom](#security-advisories).
@@ -421,9 +422,19 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > These will NOT automatically be applied to your environment.
 >
 > You must run the environment with the old revolt name to apply the update. After you run `docker compose pull` during the upgrade procedure, you must run `docker compose -p revolt down`. You may then continue with the upgrade procedure.
+
+> [!IMPORTANT]
+> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add configuration.
+>
+> Before beginning the upgrade process, please do the following:
 >
 > ```bash
-> 
+> git pull
+> chmod +x migrations/20260218-voice-config.sh
+> ./migrations/20260218-voice-config.sh your.domain
+> ```
+>
+> This should append the new configurations to your existing configuration. Only run this migration once, as if you run it more than once your instance will fail to start. You may then continue with the upgrade procedure.
 
 ## Security Advisories
 
