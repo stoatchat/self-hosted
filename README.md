@@ -16,8 +16,6 @@ Self-hosting Stoat using Docker
 This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
 > [!WARNING]
-> If you are updating an instance from before November 28, 2024, please consult the [notices section](#notices) at the bottom.
-> If you are updating an instance from before October 5, 2025, please consult the [notices section](#notices) at the bottom.
 > If you are updating an instance from before February 18, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
@@ -424,7 +422,7 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > You must run the environment with the old revolt name to apply the update. After you run `docker compose pull` during the upgrade procedure, you must run `docker compose -p revolt down`. You may then continue with the upgrade procedure.
 
 > [!IMPORTANT]
-> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add configuration.
+> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add a valid livekit configuration.
 >
 > Before beginning the upgrade process, please do the following:
 >
