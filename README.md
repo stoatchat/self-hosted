@@ -34,6 +34,7 @@ This repository contains configurations and instructions that can be used for de
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
+  - [KeyDB Compatibility](#keydb-compatibility)
   - [Making Your Instance Invite-only](#making-your-instance-invite-only)
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
@@ -343,13 +344,28 @@ For obvious reasons, be careful doing this.
 
 ### Mongo Compatibility
 
-Older processors may not support the latest MongoDB version; you may pin to MongoDB 4.4 as such:
+Older processors may not support the latest MongoDB version; you may pin to MongoDB 4.4 and update the healthcheck as such:
 
 ```yml
 # compose.override.yml
 services:
   database:
     image: mongo:4.4
+    . . .
+    healthcheck:
+      test: echo 'db.runCommand("ping").ok' | mongo localhost:27017/test --quiet
+      . . .
+```
+
+### KeyDB Compatibility
+
+Some systems may not support the latest KeyDB version; you may pin to KeyDB 6.3.3 as such:
+
+```yml
+# compose.override.yml
+services:
+  redis:
+    image: docker.io/eqalpha/keydb:v6.3.3
 ```
 
 ### Making Your Instance Invite-only
