@@ -370,7 +370,13 @@ services:
 
 ### Making Your Instance Invite-only
 
-Enable invite-only mode by setting `invite_only` in `Revolt.toml` to `true`.
+Add the following section to your `Revolt.toml` file:
+```toml
+[api.registration]
+# Whether an invite should be required for registration
+# See https://github.com/revoltchat/self-hosted#making-your-instance-invite-only
+invite_only = true
+```
 
 Create an invite:
 
