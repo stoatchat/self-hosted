@@ -1,15 +1,25 @@
 #!/usr/bin/env bash
 
+if test -f "Revolt.toml"; then
+    echo "Existing config found, running this script will overwrite your existing config. Are you sure you'd like to reconfigure?"
+    select yn in "Yes" "No"; do
+        case $yn in
+            No ) exit;;
+            Yes ) break;;
+        esac
+    done
+fi
+
 # set hostname for Caddy and vite variables
 echo "HOSTNAME=https://$1" > .env.web
 echo "REVOLT_PUBLIC_URL=https://$1/api" >> .env.web
-echo "VITE_API_URL=https://$1/api"
-echo "VITE_WS_URL=wss://$1/ws"
-echo "VITE_MEDIA_URL=https://$1/autumn"
-echo "VITE_PROXY_URL=https://$1/january"
+echo "VITE_API_URL=https://$1/api" >> .env.web
+echo "VITE_WS_URL=wss://$1/ws" >> .env.web
+echo "VITE_MEDIA_URL=https://$1/autumn" >> .env.web
+echo "VITE_PROXY_URL=https://$1/january" >> .env.web
 
 # hostnames
-echo "[hosts]" >> Revolt.toml
+echo "[hosts]" > Revolt.toml
 echo "app = \"https://$1\"" >> Revolt.toml
 echo "api = \"https://$1/api\"" >> Revolt.toml
 echo "events = \"wss://$1/ws\"" >> Revolt.toml
