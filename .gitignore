@@ -3,5 +3,8 @@ data*
 .env
 .env.web
 Revolt.toml
+livekit.yml
+Revolt.toml.old
+livekit.yml.old
 
 compose.override.yml

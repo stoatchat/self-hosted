@@ -30,13 +30,13 @@ echo "" >> livekit.yml
 echo "webhook:" >> livekit.yml
 echo "  api_key: $livekit_key" >> livekit.yml
 echo "  urls:" >> livekit.yml
-echo "  - \"https://$1/ingress/worldwide\"" >> livekit.yml
+echo "  - \"http://voice-ingress:8500/worldwide\"" >> livekit.yml
 
 # Append livekit node configuration to Revolt.toml
 echo "Adding livekit node configuration to Revolt.toml..."
 echo "" >> Revolt.toml
 echo "[api.livekit.nodes.worldwide]" >> Revolt.toml
-echo "url = \"https://$1/livekit\"" >> Revolt.toml
+echo "url = \"http://livekit:7880\"" >> Revolt.toml
 echo "lat = 0.0" >> Revolt.toml
 echo "lon = 0.0" >> Revolt.toml
 echo "key = \"$livekit_key\"" >> Revolt.toml
