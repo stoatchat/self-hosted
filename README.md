@@ -372,15 +372,40 @@ services:
 
 Enable invite-only mode by setting `invite_only` in `Revolt.toml` to `true`.
 
-Create an invite:
+You can use the interactive invite manager to create, view, and delete invite codes.
+```bash
+chmod +x invite_manager.sh
+./invite_manager.sh
+```
+
+Or you can manage the invites db by hand:
 
 ```bash
 # drop into mongo shell
 docker compose exec database mongosh
 
-# create the invite
+# connect to the db
 use revolt
+```
+
+Then you are able to...
+
+Create an invite:
+
+```bash
 db.invites.insertOne({ _id: "enter_an_invite_code_here" })
+```
+
+View all pending invites:
+
+```bash
+db.invites.find()
+```
+
+Delete a pending invite:
+
+```bash
+db.invites.deleteOne({ _id: "invite_code_to_be_deleted" })
 ```
 
 ## Notices
