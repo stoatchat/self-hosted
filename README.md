@@ -45,7 +45,7 @@ To get started, find yourself a suitable server to deploy onto, we recommend sta
 >
 > **We've partnered with Hostinger to bring you a 20% discount off VPS hosting!**
 >
-> 👉 https://www.hostinger.com/vps-hosting?REFERRALCODE=REVOLTCHAT
+> [![Deploy on Hostinger](https://assets.hostinger.com/vps/deploy.svg)](https://www.hostinger.com/vps/docker-hosting?compose_url=https://raw.githubusercontent.com/revoltchat/self-hosted/refs/heads/master/compose.yml&REFERRALCODE=REVOLTCHAT)
 >
 > We recommend using the _KVM 2_ plan at minimum!\
 > Our testing environment for self-hosted currently sits on a KVM 2 instance, and we are happy to assist with issues.
