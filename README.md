@@ -28,9 +28,7 @@ This repository contains configurations and instructions that can be used for de
 
 - [Deployment](#deployment)
 - [Updating](#updating)
-- [Advanced Deployment](#advanced-deployment)
 - [Additional Notes](#additional-notes)
-  - [Custom Domain](#custom-domain)
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
