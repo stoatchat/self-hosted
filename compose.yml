@@ -73,7 +73,7 @@ services:
 
   # API server
   api:
-    image: ghcr.io/revoltchat/server:20250930-2
+    image: ghcr.io/stoatchat/api:v0.11.1
     depends_on:
       database:
         condition: service_healthy
@@ -89,7 +89,7 @@ services:
 
   # Events service
   events:
-    image: ghcr.io/revoltchat/bonfire:20250930-2
+    image: ghcr.io/stoatchat/events:v0.11.1
     depends_on:
       database:
         condition: service_healthy
@@ -101,15 +101,9 @@ services:
         target: /Revolt.toml
     restart: always
 
-  # Web App
-  web:
-    image: ghcr.io/revoltchat/client:master
-    restart: always
-    env_file: .env.web
-
   # File server
   autumn:
-    image: ghcr.io/revoltchat/autumn:20250930-2
+    image: ghcr.io/stoatchat/file-server:v0.11.1
     depends_on:
       database:
         condition: service_healthy
@@ -123,7 +117,7 @@ services:
 
   # Metadata and image proxy
   january:
-    image: ghcr.io/revoltchat/january:20250930-2
+    image: ghcr.io/stoatchat/proxy:v0.11.1
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -132,7 +126,7 @@ services:
 
   # Tenor proxy
   gifbox:
-    image: ghcr.io/revoltchat/gifbox:20250930-2
+    image: ghcr.io/stoatchat/gifbox:v0.11.1
     volumes:
       - type: bind
         source: ./Revolt.toml
@@ -141,7 +135,7 @@ services:
 
   # Regular task daemon
   crond:
-    image: ghcr.io/revoltchat/crond:20250930-2
+    image: ghcr.io/stoatchat/crond:v0.11.1
     depends_on:
       database:
         condition: service_healthy
@@ -155,7 +149,7 @@ services:
 
   # Push notification daemon
   pushd:
-    image: ghcr.io/revoltchat/pushd:20250930-2
+    image: ghcr.io/stoatchat/pushd:v0.11.1
     depends_on:
       database:
         condition: service_healthy
@@ -167,6 +161,30 @@ services:
       - type: bind
         source: ./Revolt.toml
         target: /Revolt.toml
+    restart: always
+
+   # Voice ingress daemon
+  voice-ingress:
+    image: ghcr.io/stoatchat/voice-ingress:v0.11.1
+    restart: always
+    depends_on:
+      database:
+        condition: service_healthy
+      rabbit:
+        condition: service_healthy
+    volumes:
+      - type: bind
+        source: ./Revolt.toml
+        target: /Revolt.toml
+
+  livekit:
+    image: ghcr.io/stoatchat/livekit-server:v1.9.6
+    command: --config /etc/livekit.yml
+    volumes:
+      - ./livekit.yml:/etc/livekit.yml
+    ports:
+      - "7881:7881"
+      - "50000-50100:50000-50100/udp"
     restart: always
 
   # Create buckets for minio.
@@ -183,3 +201,9 @@ services:
       /usr/bin/mc mb minio/revolt-uploads;
       exit 0;
       "
+
+  # Web App
+  web:
+    image: ghcr.io/stoatchat/for-web:addb6b7
+    restart: always
+    env_file: .env.web
