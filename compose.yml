@@ -6,7 +6,7 @@ services:
     image: docker.io/mongo
     restart: always
     volumes:
-      - ./data/db:/data/db
+      - ./stoat/data/db:/data/db
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
       interval: 10s
@@ -27,7 +27,7 @@ services:
       RABBITMQ_DEFAULT_USER: rabbituser
       RABBITMQ_DEFAULT_PASS: rabbitpass
     volumes:
-      - ./data/rabbit:/var/lib/rabbitmq
+      - ./stoat/data/rabbit:/var/lib/rabbitmq
     healthcheck:
       test: rabbitmq-diagnostics -q ping
       interval: 10s
@@ -40,7 +40,7 @@ services:
     image: docker.io/minio/minio
     command: server /data
     volumes:
-      - ./data/minio:/data
+      - ./stoat/data/minio:/data
     environment:
       MINIO_ROOT_USER: minioautumn
       MINIO_ROOT_PASSWORD: minioautumn
@@ -67,9 +67,9 @@ services:
       - "8998:80"
       - "8999:443"
     volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile
-      - ./data/caddy-data:/data
-      - ./data/caddy-config:/config
+      - ./stoat/Caddyfile:/etc/caddy/Caddyfile
+      - ./stoat/data/caddy-data:/data
+      - ./stoat/data/caddy-config:/config
 
   # API server
   api:
@@ -83,7 +83,7 @@ services:
         condition: service_healthy
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -97,7 +97,7 @@ services:
         condition: service_started
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -111,7 +111,7 @@ services:
         condition: service_started
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -120,7 +120,7 @@ services:
     image: ghcr.io/stoatchat/proxy:v0.11.1
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -129,7 +129,7 @@ services:
     image: ghcr.io/stoatchat/gifbox:v0.11.1
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -143,7 +143,7 @@ services:
         condition: service_started
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -159,7 +159,7 @@ services:
         condition: service_healthy
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
     restart: always
 
@@ -174,14 +174,14 @@ services:
         condition: service_healthy
     volumes:
       - type: bind
-        source: ./Revolt.toml
+        source: ./stoat/Revolt.toml
         target: /Revolt.toml
 
   livekit:
     image: ghcr.io/stoatchat/livekit-server:v1.9.6
     command: --config /etc/livekit.yml
     volumes:
-      - ./livekit.yml:/etc/livekit.yml
+      - ./stoat/livekit.yml:/etc/livekit.yml
     ports:
       - "7881:7881"
       - "50000-50100:50000-50100/udp"
