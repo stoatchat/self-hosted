@@ -10,8 +10,17 @@ if test -f "Revolt.toml"; then
     done
 fi
 
+# Ask if running behind a reverse proxy
+echo "Is this application running behind a reverse proxy? (e.g NGNIX)"
+select yn in "Yes" "No"; do
+    case $yn in
+        No  ) HOSTNAME_PREFIX="https://$1"; break;;
+        Yes ) HOSTNAME_PREFIX=":80"; break;;
+    esac
+done
+
 # set hostname for Caddy and vite variables
-echo "HOSTNAME=https://$1" > .env.web
+echo "HOSTNAME=$HOSTNAME_PREFIX" > .env.web
 echo "REVOLT_PUBLIC_URL=https://$1/api" >> .env.web
 echo "VITE_API_URL=https://$1/api" >> .env.web
 echo "VITE_WS_URL=wss://$1/ws" >> .env.web
