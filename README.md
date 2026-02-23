@@ -34,6 +34,10 @@ This repository contains configurations and instructions that can be used for de
   - [Mongo Compatibility](#mongo-compatibility)
   - [KeyDB Compatibility](#keydb-compatibility)
   - [Making Your Instance Invite-only](#making-your-instance-invite-only)
+- [Compiling Applications For Your Self-Hosted Instance](#compiling-applications-for-self-hosted-servers)
+  - [Desktop](#desktop)
+    - [Adding a Flag To Existing Application](#adding-a-flag-to-existing-app)
+    - [Compiling Your Own Desktop App](#compiling-your-own-desktop-app)
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
 
@@ -333,6 +337,33 @@ docker compose exec database mongosh
 use revolt
 db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ```
+
+## Compiling Applications For Self-Hosted-Servers
+
+### Desktop
+You can set the desktop application to point to your self-hosted server by either of the ways listed below.
+#### Adding A Flag to Existing App
+
+- For Windows:
+  - Go to the main Stoat desktop executable location in your local directory. To get there, press Windows+R and type ```%localappdata%\Stoat```.
+  - Make a shortcut for the stoat-desktop.exe.
+  - Right click the shortcut and go to 'Properties'
+  - In the 'Target' field, add the flag ```--force-server=https://replace-with-your-server-address.com```.
+    - The target field should look somethinig like ```C:\Users\YourUser\AppData\Local\Stoat\stoat-desktop.exe --force-server=https://replace-with-your-server-address.com```.
+  - Run the shortcut and ensure it points to your new server instance
+    - If another Stoat instance is running, it will open it instead, be sure to close out of any open Stoat apps.
+#### Compiling Your Own Desktop App
+Follow the instructions at [Stoat For Desktop](https://github.com/stoatchat/for-desktop) but do not run ```pnpm make``` yet.
+
+To point the desktop app to your self hosted server by going into ```src/native/window.ts``` and replace the default server URL with your instances URL.
+```typescript
+export const BUILD_URL = new URL(
+  app.commandLine.hasSwitch("force-server")
+    ? app.commandLine.getSwitchValue("force-server")
+    : "https://replace-with-your-server-address.com",
+);
+```
+Then run ```pnpm make```
 
 ## Notices
 
