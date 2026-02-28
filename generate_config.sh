@@ -26,6 +26,8 @@ if test -f "Revolt.toml"; then
         mv Revolt.toml Revolt.toml.old
         echo "Renaming livekit.yml to livekit.yml.old"
         mv livekit.yml livekit.yml.old
+        echo "Renaming compose.override.yml to compose.override.yml.old"
+        mv compose.override.yml compose.override.yml.old
     else
         echo "Existing config found, in caution, this script will refuse to execute if you have existing config."
         if [ "$SECRETS_FOUND" -eq "0" ]; then

@@ -9,3 +9,4 @@ livekit.yml.old
 secrets.env
 
 compose.override.yml
+compose.override.yml.old
