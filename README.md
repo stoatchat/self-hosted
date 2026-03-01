@@ -16,7 +16,7 @@ Self-hosting Stoat using Docker
 This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
 > [!WARNING]
-> If you are updating an instance from before February 20, 2026, please consult the [notices section](#notices) at the bottom.
+> If you are updating an instance from before February 28, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!IMPORTANT]
 > A list of security advisories is [provided at the bottom](#security-advisories).
@@ -27,6 +27,10 @@ This repository contains configurations and instructions that can be used for de
 ## Table of Contents
 
 - [Deployment](#deployment)
+  - [Secure your server](#secure-your-server)
+  - [Configure your domain](#configure-your-domain)
+  - [Install Required Dependencies](#install-required-dependencies)
+- [Configuring](#configuring)
 - [Updating](#updating)
 - [Additional Notes](#additional-notes)
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
@@ -85,7 +89,7 @@ ssh root@<ip address>
 ssh root@<ip address> -i path/to/id_rsa
 ```
 
-And now we can proceed with some basic configuration and securing the system:
+### Securing your server
 
 ```bash
 # update the system
@@ -109,7 +113,9 @@ reboot
 ```
 
 > [!NOTE]
-> If you are using another cloud provider, or you are doing this on a physical machine, you will need to forwards ports 80, 443, 7881 and 50000-50100/udp.
+> If you are using another cloud provider, or you are doing this on a physical machine, you will need to forward ports 80, 443, 7881 and 50000-50100/udp.
+
+### Configuring your domain
 
 Your system is now ready to proceed with installation, but before we continue, you should configure your domain.
 
@@ -117,7 +123,7 @@ Your system is now ready to proceed with installation, but before we continue, y
 
 Your domain (or a subdomain) should point to the server's IP (A and AAAA records) or CNAME to the hostname provided.
 
-Next, we must install the required dependencies:
+### Install required dependencies
 
 ```bash
 # ensure Git and Docker are installed
@@ -136,6 +142,8 @@ apt-get update
 apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
 
+## Configuration
+
 Now, we can pull in the configuration for Stoat:
 
 ```bash
@@ -149,6 +157,8 @@ Generate a configuration file by running:
 chmod +x ./generate_config.sh
 ./generate_config.sh your.domain
 ```
+
+The generate_config.sh script will create the neccessary secrets required to create a Stoat instance, and the secrets will be inserted into a file named `secrets.env`. You should back up this file, as losing it may result in you losing access to all files on your Stoat instance.
 
 You can find [more options here](https://github.com/stoatchat/stoatchat/blob/main/crates/core/config/Revolt.toml), some noteworthy configuration options:
 
@@ -185,7 +195,13 @@ Pull the latest version of this repository:
 git pull
 ```
 
-Check if your configuration file is correct by opening [the reference config file](https://github.com/stoatchat/stoatchat/blob/main/crates/core/config/Revolt.toml) and your `Revolt.toml` to compare changes.
+Ensure that your secrets in `Revolt.toml` and `secrets.env` match. If your secrets don't match, copy the secrets from `Revolt.toml` to `secrets.env`. The following step will **overwrite** your existing configuration. If you have custom configuration settings you will need to copy them over afterwards. Alternatively, you can forgo running the configurator, but you may miss out on new features.
+
+Run the configuration script with your domain and pass the overwrite flag:
+
+```bash
+./generate_config.sh your.domain --overwrite
+```
 
 Then pull all the latest images:
 
@@ -203,31 +219,7 @@ docker compose up -d
 
 ### Placing Behind Another Reverse-Proxy or Another Port
 
-If you'd like to place Stoat behind another reverse proxy or on a non-standard port, you'll need to edit `compose.yml`.
-
-Override the port definitions on `caddy`:
-
-```yml
-# compose.yml
-services:
-  caddy:
-    ports:
-      - "1234:80"
-      # - "443:443"
-```
-
-> [!WARNING]
-> This file is not included in `.gitignore`. It may be sufficient to use an override file, but that will not remove port `80` / `443` allocations.
-
-Update the hostname used by the web server:
-
-```diff
-# .env.web
-- HOSTNAME=http://example.com
-+ HOSTNAME=:80
-```
-
-You can now reverse proxy to <http://localhost:1234>.
+During configuration using `generate_config.sh` you will be asked if you'd like to place Stoat behind another reverse proxy. Enter `y` to configure for reverse proxy. This will expose your caddy on port 8880, and you can reverse proxy to <http://localhost:8880>
 
 > [!NOTE]
 > If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets on /ws and /livekit, which are required for Stoat.
@@ -304,13 +296,13 @@ services:
 
 ### KeyDB Compatibility
 
-Some systems may not support the latest KeyDB version; you may pin to KeyDB 6.3.3 as such:
+Some systems (including ARM systems) may not support the latest KeyDB version; you may use redis or valkey instead as such:
 
 ```yml
 # compose.override.yml
 services:
   redis:
-    image: docker.io/eqalpha/keydb:v6.3.3
+    image: valkey/valkey:8
 ```
 
 ### Making Your Instance Invite-only
@@ -319,7 +311,7 @@ Add the following section to your `Revolt.toml` file:
 ```toml
 [api.registration]
 # Whether an invite should be required for registration
-# See https://github.com/revoltchat/self-hosted#making-your-instance-invite-only
+# See https://github.com/stoatchat/self-hosted#making-your-instance-invite-only
 invite_only = true
 ```
 
@@ -335,6 +327,9 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ```
 
 ## Notices
+
+<details>
+<summary>If you deployed Stoat before October 5, 2025...</summary>
 
 > [!IMPORTANT]
 > If you deployed Stoat before [2022-10-29](https://github.com/minio/docs/issues/624#issuecomment-1296608406), you may have to tag the `minio` image release if it's configured in "fs" mode.
@@ -407,28 +402,26 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 > These will NOT automatically be applied to your environment.
 >
 > You must run the environment with the old revolt name to apply the update. After you run `docker compose pull` during the upgrade procedure, you must run `docker compose -p revolt down`. You may then continue with the upgrade procedure.
+</details>
+
+<br />
 
 > [!IMPORTANT]
-> As of February 18, 2026, livekit support and the new web app was added to the self host repo. In order to utilize the new voice features and the new web app, you must add a valid livekit configuration.
+> As of February 28, 2026, the configuration script will load secrets into `secrets.env`. You must copy your existing secrets into secrets.env to prevent `generate_config.sh` from overwriting your secrets. If your secrets are overwritten you will lose access to all files on your Stoat instance.
 >
-> Before beginning the upgrade process, please do the following:
+> Copy secrets.env.example to secrets.env
 >
 > ```bash
-> git pull
-> chmod +x migrations/20260218-voice-config.sh
-> ./migrations/20260218-voice-config.sh your.domain
+> cp secrets.env.example secrets.env
 > ```
 >
-> This should append the new configurations to your existing configuration. Only run this migration once, as if you run it more than once your instance will fail to start. You may then continue with the upgrade procedure.
-
-> [!IMPORTANT]
-> As of February 20, 2026, there was an error in the `generate_config.sh` script. Please apply the following changes to your configuration:
+> Begin the process of copying  your secrets to secrets.env. You can view where each secret is located by reading the `secrets.env` file. Open the file with micro and read the instructions.
 >
-> In `Revolt.toml`, under the section `[api.livekit.nodes.worldwide]`, change the url value to `http://livekit:7880`
+> ```bash
+> micro secrets.env
+> ```
 >
-> In `livekit.yml`, under the section `webhook`, change the first line under `url` to `http://voice-ingress:8500/worldwide`
->
-> Please note that these say `http` and not `https`. That is intentional.
+> All of your secrets can be found in `Revolt.toml` and should be copied to your `secrets.env` file. After all 5 secrets are copied over, you are safe to run `generate_config.sh` to get new configuration options.
 
 ## Security Advisories
 
