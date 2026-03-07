@@ -33,6 +33,7 @@ This repository contains configurations and instructions that can be used for de
 - [Configuration](#configuration)
 - [Updating](#updating)
 - [Additional Notes](#additional-notes)
+  - [Creating an Account](#creating-an-account)
   - [Placing Behind Another Reverse-Proxy or Another Port](#placing-behind-another-reverse-proxy-or-another-port)
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
@@ -217,6 +218,11 @@ docker compose up -d
 ```
 
 ## Additional Notes
+
+### Creating an Account
+
+By default, email verification is disabled.
+However, when you sign up for an account on your Stoat instance, you are still required to submit an email address and will see a prompt to "Check your mail!" for a verification email. You can simply return to the login page and log in using the email address and password you just set.
 
 ### Placing Behind Another Reverse-Proxy or Another Port
 
