@@ -73,7 +73,7 @@ services:
     networks:
       default:
         aliases:
-         - "${STOAT_DOMAIN}"
+         - "${STOAT_DOMAIN:-caddy}"
 
   # API server
   api:

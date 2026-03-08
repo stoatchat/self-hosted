@@ -76,8 +76,6 @@ echo "Configuring Stoat with hostname $DOMAIN"
 
 STOAT_HOSTNAME="https://$DOMAIN"
 
-echo "STOAT_DOMAIN=$DOMAIN" > .env
-
 read -rp "Would you like to place Stoat behind another reverse proxy? [y/N]: "
 if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
     echo "Yes received. Configuring for reverse proxy."
@@ -88,8 +86,10 @@ if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
     echo "    ports: !override" >> compose.override.yml
     echo "     - \"8880:80\"" >> compose.override.yml
     echo "caddy is configured to host on :8880. If you need a different port, modify the compose.override.yml."
+    echo "STOAT_DOMAIN=" > .env
 else
     echo "No received. Configuring with built in caddy as primary reverse proxy."
+    echo "STOAT_DOMAIN=$DOMAIN" > .env
 fi
 
 # Generate secrets
