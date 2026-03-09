@@ -40,6 +40,7 @@ This repository contains configurations and instructions that can be used for de
   - [KeyDB Compatibility](#keydb-compatibility)
   - [Making Your Instance Invite-only](#making-your-instance-invite-only)
   - [Why ports 7881 and 50000-50100/udp aren't in the Caddyfile](#why-ports-7881-and-50000-50100udp-arent-in-the-caddyfile)
+  - [Getting kicked on video enabled instances when turning on video](#getting-kicked-on-video-enabled-instances-when-turning-on-video)
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
 
@@ -336,6 +337,10 @@ db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ### Why ports 7881 and 50000-50100/udp aren't in the Caddyfile
 
 Livekit requires ports 7881/tcp and 50000-50100/udp to be openly accessible on the internet. These ports are used for the RTC protocol. Caddy does not support RTC without significant configuration changes that are out of scope of this repo.
+
+### Getting kicked on video enabled instances when turning on video
+
+Due to an incomplete implementation, Stoat will kick any user that attempts to stream a video that is larger than the maximum size defined in `Revolt.toml`. If you would like to increase the maximum size allowed on your Stoat instance, you can do so by modifying the `video_resolution` field under `[features.limits.new_user]` and `[features.limits.default]` to a larger value in your `Revolt.toml`. For example, 4k would be : `[3996, 2160]`.
 
 ## Notices
 

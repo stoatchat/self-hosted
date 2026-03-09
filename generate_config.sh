@@ -3,6 +3,7 @@
 SECRETS_FOUND=0
 IS_OVERWRITING=0
 DOMAIN=
+VIDEO_ENABLED=
 
 usage() {
     echo "Usage: ./generate_config.sh [--overwrite] DOMAIN"
@@ -92,6 +93,14 @@ else
     echo "STOAT_DOMAIN=$DOMAIN" > .env
 fi
 
+read -rp "Would you like to enable camera and screen sharing? [Y/n]: "
+if [ "$REPLY" = "n" ] || [ "$REPLY" = "N" ]; then
+    echo "No received. Not configuring video."
+else
+    echo "Yes received. Configuring video."
+    VIDEO_ENABLED=true
+fi
+
 # Generate secrets
 echo "Generating secrets..."
 if [ "$PUSHD_VAPID_PRIVATEKEY" = "" ]; then 
@@ -156,6 +165,7 @@ echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
 echo "VITE_WS_URL=wss://$DOMAIN/ws" >> .env.web
 echo "VITE_MEDIA_URL=https://$DOMAIN/autumn" >> .env.web
 echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
+echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # hostnames
 echo "[hosts]" > Revolt.toml
@@ -211,6 +221,20 @@ echo "lat = 0.0" >> Revolt.toml
 echo "lon = 0.0" >> Revolt.toml
 echo "key = \"$LIVEKIT_WORLDWIDE_KEY\"" >> Revolt.toml
 echo "secret = \"$LIVEKIT_WORLDWIDE_SECRET\"" >> Revolt.toml
+
+# Video config
+# We need to address issue https://github.com/stoatchat/stoatchat/issues/588 until we adopt a backend version later than 0.12.0
+# We'll enable 1080p video by default, that should be high enough for most users.
+if [[ -n "$VIDEO_ENABLED" ]]; then
+    echo "" >> Revolt.toml
+    echo "[features.limits.new_user]" >> Revolt.toml
+    echo "video_resolution = [1920, 1080]" >> Revolt.toml
+    echo "video_aspect_ratio = [0.3, 10]" >> Revolt.toml
+    echo "" >> Revolt.toml
+    echo "[features.limits.default]" >> Revolt.toml
+    echo "video_resolution = [1920, 1080]" >> Revolt.toml
+    echo "video_aspect_ratio = [0.3, 10]" >> Revolt.toml
+fi
 
 if [[ $IS_OVERWRITING -eq 1 ]]; then
     echo "Overwrote existing config. If any custom configuration was present in old Revolt.toml, you may now copy it over from Revolt.toml.old."
