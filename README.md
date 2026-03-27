@@ -19,9 +19,10 @@ This repository contains configurations and instructions that can be used for de
 > If you are updating an instance from before February 28, 2026, please consult the [notices section](#notices) at the bottom.
 
 > [!WARNING]
-> Due to a broken dependency in mongodb >=8.0, Stoat's database service is currently broken on Linux kernel versions >=6.19.
-> This causes the database container to crash and restart endlessly every 30 seconds or so.
+> Due to a broken dependency in mongodb >=8.0, Stoat's database service is currently broken on Linux kernel versions >=6.19. This causes the database container to crash and restart endlessly every 30 seconds or so.
+> 
 > Until a patch is released, the only option is likely to downgrade your kernel for the time being.
+> 
 > See [the mongodb release notes](https://www.mongodb.com/docs/manual/release-notes/8.0/) for more information.
 
 > [!IMPORTANT]
