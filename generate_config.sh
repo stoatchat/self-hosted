@@ -227,7 +227,6 @@ echo "lat = 0.0" >> Revolt.toml
 echo "lon = 0.0" >> Revolt.toml
 
 # Video config
-# We need to address issue https://github.com/stoatchat/stoatchat/issues/588 until we adopt a backend version later than 0.12.0
 # We'll enable 1080p video by default, that should be high enough for most users.
 if [[ -n "$VIDEO_ENABLED" ]]; then
     echo "" >> Revolt.toml

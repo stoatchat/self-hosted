@@ -27,8 +27,8 @@ This repository contains configurations and instructions that can be used for de
 ## Table of Contents
 
 - [Deployment](#deployment)
-  - [Secure your server](#secure-your-server)
-  - [Configure your domain](#configure-your-domain)
+  - [Securing your server](#securing-your-server)
+  - [Configuring your domain](#configuring-your-domain)
   - [Install Required Dependencies](#install-required-dependencies)
 - [Configuration](#configuration)
 - [Updating](#updating)
