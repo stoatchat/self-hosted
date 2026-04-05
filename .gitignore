@@ -7,6 +7,7 @@ livekit.yml
 Revolt.toml.old
 livekit.yml.old
 secrets.env
+secrets.env.old
 
 compose.override.yml
 compose.override.yml.old

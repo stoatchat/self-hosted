@@ -71,6 +71,24 @@ fi
 if [ "$SECRETS_FOUND" -eq "0" ]; then
     cp secrets.env.example secrets.env
     loadSecrets
+else
+    echo "Checking if secrets file needs to be updated..."
+    if [ "$PUSHD_VAPID_PRIVATEKEY" != "" ] || [ "$PUSHD_VAPID_PUBLICKEY" != "" ] || [ "$FILES_ENCRYPTION_KEY" != "" ] || [ "$LIVEKIT_WORLDWIDE_SECRET" != "" ] || [ "$LIVEKIT_WORLDWIDE_KEY" != "" ]; then
+        echo "Old secrets found. Your secrets will be rewritten in the new format. If you have any custom secrets not managed by this file, you will need to convert them to the new format."
+        echo "See https://github.com/stoatchat/stoatchat/pull/576"
+        echo "Renaming secrets.env to secrets.env.old"
+        mv secrets.env secrets.env.old
+        echo "Copying old secrets to new format..."
+        cp secrets.env.example secrets.env
+        printf "REVOLT__PUSHD__VAPID__PRIVATE_KEY='%s'\n" $PUSHD_VAPID_PRIVATEKEY >> secrets.env
+        printf "REVOLT__PUSHD__VAPID__PUBLIC_KEY='%s'\n" $PUSHD_VAPID_PUBLICKEY >> secrets.env
+        echo "" >> secrets.env
+        printf "REVOLT__FILES__ENCRYPTION_KEY='%s'\n" $FILES_ENCRYPTION_KEY >> secrets.env
+        echo "" >> secrets.env
+        printf "REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET='%s'\n" $LIVEKIT_WORLDWIDE_SECRET >> secrets.env
+        printf "REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY='%s'\n" $LIVEKIT_WORLDWIDE_KEY >> secrets.env
+        loadSecrets
+    fi
 fi
 
 echo "Configuring Stoat with hostname $DOMAIN"
@@ -103,56 +121,56 @@ fi
 
 # Generate secrets
 echo "Generating secrets..."
-if [ "$PUSHD_VAPID_PRIVATEKEY" = "" ]; then 
-    if [ "$PUSHD_VAPID_PUBLICKEY" != "" ]; then
+if [ "$REVOLT__PUSHD__VAPID__PRIVATE_KEY" = "" ]; then 
+    if [ "$REVOLT__PUSHD__VAPID__PUBLIC_KEY" != "" ]; then
         echo "VAPID public key is defined when private key isn't?"
-        echo "Did you forget to copy the PUSHD_VAPID_PRIVATEKEY secret?"
-        echo "Try removing PUSHD_VAPID_PUBLICKEY if you do not have a private key."
+        echo "Did you forget to copy the REVOLT__PUSHD__VAPID__PRIVATE_KEY secret?"
+        echo "Try removing REVOLT__PUSHD__VAPID__PUBLIC_KEY if you do not have a private key."
         exit 1
     fi
     echo "Generating Pushd VAPID secrets..."
     openssl ecparam -name prime256v1 -genkey -noout -out vapid_private.pem
-    PUSHD_VAPID_PRIVATEKEY=$(base64 -i vapid_private.pem | tr -d '\n' | tr -d '=')
-    PUSHD_VAPID_PUBLICKEY=$(openssl ec -in vapid_private.pem -outform DER|tail --bytes 65|base64|tr '/+' '_-'|tr -d '\n'|tr -d '=')
+    REVOLT__PUSHD__VAPID__PRIVATE_KEY=$(base64 -i vapid_private.pem | tr -d '\n' | tr -d '=')
+    REVOLT__PUSHD__VAPID__PUBLIC_KEY=$(openssl ec -in vapid_private.pem -outform DER|tail --bytes 65|base64|tr '/+' '_-'|tr -d '\n'|tr -d '=')
     rm vapid_private.pem
     echo "" >> secrets.env
-    printf "PUSHD_VAPID_PRIVATEKEY='%s'\n" $PUSHD_VAPID_PRIVATEKEY >> secrets.env
-    printf "PUSHD_VAPID_PUBLICKEY='%s'\n" $PUSHD_VAPID_PUBLICKEY >> secrets.env
-elif [ "$PUSHD_VAPID_PUBLICKEY" = "" ]; then
+    printf "REVOLT__PUSHD__VAPID__PRIVATE_KEY='%s'\n" $REVOLT__PUSHD__VAPID__PRIVATE_KEY >> secrets.env
+    printf "REVOLT__PUSHD__VAPID__PUBLIC_KEY='%s'\n" $REVOLT__PUSHD__VAPID__PUBLIC_KEY >> secrets.env
+elif [ "$REVOLT__PUSHD__VAPID__PUBLIC_KEY" = "" ]; then
     echo "VAPID private key is defined when public key isn't?"
-    echo "Did you forget to copy the PUSHD_VAPID_PUBLICKEY secret?"
-    echo "Try removing PUSHD_VAPID_PRIVATEKEY if you do not have a public key."
+    echo "Did you forget to copy the REVOLT__PUSHD__VAPID__PUBLIC_KEY secret?"
+    echo "Try removing REVOLT__PUSHD__VAPID__PRIVATE_KEY if you do not have a public key."
     exit 1
 else
     echo "Using old Pushd VAPID secrets..."
 fi
 
-if [ "$FILES_ENCRYPTION_KEY" = "" ]; then
+if [ "$REVOLT__FILES__ENCRYPTION_KEY" = "" ]; then
     echo "Generating files encryption secret..."
-    FILES_ENCRYPTION_KEY=$(openssl rand -base64 32)
+    REVOLT__FILES__ENCRYPTION_KEY=$(openssl rand -base64 32)
     echo "" >> secrets.env
-    printf "FILES_ENCRYPTION_KEY='%s'\n" $FILES_ENCRYPTION_KEY >> secrets.env
+    printf "REVOLT__FILES__ENCRYPTION_KEY='%s'\n" $REVOLT__FILES__ENCRYPTION_KEY >> secrets.env
 else
     echo "Using old files encryption secret..."
 fi
 
-if [ "$LIVEKIT_WORLDWIDE_SECRET" = "" ]; then 
-    if [ "$LIVEKIT_WORLDWIDE_KEY" != "" ]; then
+if [ "$REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET" = "" ]; then 
+    if [ "$REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY" != "" ]; then
         echo "Livekit public key is defined when secret isn't?"
-        echo "Did you forget to copy the LIVEKIT_WORLDWIDE_SECRET secret?"
-        echo "Try removing LIVEKIT_WORLDWIDE_KEY if you do not have a secret."
+        echo "Did you forget to copy the REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET secret?"
+        echo "Try removing REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY if you do not have a secret."
         exit 1
     fi
     echo "Generating Livekit secrets..."
-    LIVEKIT_WORLDWIDE_SECRET=$(openssl rand -hex 24)
-    LIVEKIT_WORLDWIDE_KEY=$(openssl rand -hex 6)
+    REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET=$(openssl rand -hex 24)
+    REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY=$(openssl rand -hex 6)
     echo "" >> secrets.env
-    printf "LIVEKIT_WORLDWIDE_SECRET='%s'\n" $LIVEKIT_WORLDWIDE_SECRET >> secrets.env
-    printf "LIVEKIT_WORLDWIDE_KEY='%s'\n" $LIVEKIT_WORLDWIDE_KEY >> secrets.env
-elif [ "$LIVEKIT_WORLDWIDE_KEY" = "" ]; then
+    printf "REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET='%s'\n" $REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET >> secrets.env
+    printf "REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY='%s'\n" $REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY >> secrets.env
+elif [ "$REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY" = "" ]; then
     echo "Livekit secret is defined when public key isn't?"
-    echo "Did you forget to copy the LIVEKIT_WORLDWIDE_KEY secret?"
-    echo "Try removing LIVEKIT_WORLDWIDE_SECRET if you do not have a public key."
+    echo "Did you forget to copy the REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY secret?"
+    echo "Try removing REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET if you do not have a public key."
     exit 1
 else
     echo "Using old Livekit secrets..."
@@ -180,18 +198,6 @@ echo "" >> Revolt.toml
 echo "[hosts.livekit]" >> Revolt.toml
 echo "worldwide = \"wss://$DOMAIN/livekit\"" >> Revolt.toml
 
-# VAPID keys
-echo "" >> Revolt.toml
-echo "[pushd.vapid]" >> Revolt.toml
-
-echo "private_key = \"$PUSHD_VAPID_PRIVATEKEY\"" >> Revolt.toml
-echo "public_key = \"$PUSHD_VAPID_PUBLICKEY\"" >> Revolt.toml
-
-# encryption key for files
-echo "" >> Revolt.toml
-echo "[files]" >> Revolt.toml
-echo "encryption_key = \"$FILES_ENCRYPTION_KEY\"" >> Revolt.toml
-
 # livekit yml
 echo "rtc:" > livekit.yml
 echo "  use_external_ip: true" >> livekit.yml
@@ -206,10 +212,10 @@ echo "turn:" >> livekit.yml
 echo "  enabled: false" >> livekit.yml
 echo "" >> livekit.yml
 echo "keys:" >> livekit.yml
-echo "  $LIVEKIT_WORLDWIDE_KEY: $LIVEKIT_WORLDWIDE_SECRET" >> livekit.yml
+echo "  $REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY: $REVOLT__API__LIVEKIT__NODES__WORLDWIDE__SECRET" >> livekit.yml
 echo "" >> livekit.yml
 echo "webhook:" >> livekit.yml
-echo "  api_key: $LIVEKIT_WORLDWIDE_KEY" >> livekit.yml
+echo "  api_key: $REVOLT__API__LIVEKIT__NODES__WORLDWIDE__KEY" >> livekit.yml
 echo "  urls:" >> livekit.yml
 echo "  - \"http://voice-ingress:8500/worldwide\"" >> livekit.yml
 
@@ -219,8 +225,6 @@ echo "[api.livekit.nodes.worldwide]" >> Revolt.toml
 echo "url = \"http://livekit:7880\"" >> Revolt.toml
 echo "lat = 0.0" >> Revolt.toml
 echo "lon = 0.0" >> Revolt.toml
-echo "key = \"$LIVEKIT_WORLDWIDE_KEY\"" >> Revolt.toml
-echo "secret = \"$LIVEKIT_WORLDWIDE_SECRET\"" >> Revolt.toml
 
 # Video config
 # We need to address issue https://github.com/stoatchat/stoatchat/issues/588 until we adopt a backend version later than 0.12.0
