@@ -190,7 +190,7 @@ services:
         target: /Revolt.toml
 
   livekit:
-    image: ghcr.io/stoatchat/livekit-server:v1.9.6
+    image: ghcr.io/stoatchat/livekit-server:v1.9.13
     depends_on:
       redis:
         condition: service_started
