@@ -186,7 +186,11 @@ echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
 echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # hostnames
-echo "[hosts]" > Revolt.toml
+echo "# All secrets are stored in secrets.env" > Revolt.toml
+echo "# Any configuration added to this file will be overwritten by generate_config on run; however," >> Revolt.toml
+echo "# the script will back up your old configuration so you can copy over your old configuration" >> Revolt.toml
+echo "# values if needed." >> Revolt.toml
+echo "[hosts]" >> Revolt.toml
 echo "app = \"https://$DOMAIN\"" >> Revolt.toml
 echo "api = \"https://$DOMAIN/api\"" >> Revolt.toml
 echo "events = \"wss://$DOMAIN/ws\"" >> Revolt.toml
