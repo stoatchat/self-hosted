@@ -3,12 +3,15 @@ name: stoat
 services:
   # MongoDB: Database
   database:
-    image: docker.io/mongo
+    build: 
+      context: . 
+      dockerfile: mongo.Dockerfile
     restart: always
     volumes:
       - ./data/db:/data/db
+      - ./mongo_ping.py:/mongo_ping.py
     healthcheck:
-      test: echo 'db.runCommand("ping").ok' | mongosh localhost:27017/test --quiet
+      test: ["CMD", "python3", "/mongo_ping.py"]
       interval: 10s
       timeout: 10s
       retries: 5
