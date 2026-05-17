@@ -434,3 +434,5 @@ Due to an incomplete implementation, Stoat will kick any user that attempts to s
 - (`2024-12-17`) [GHSA-7f9x-pm3g-j7p4 revoltchat/january: January service can call itself recursively, causing heavy load.](https://github.com/revoltchat/january/security/advisories/GHSA-7f9x-pm3g-j7p4)
 - (`2025-02-10`) [GHSA-8684-rvfj-v3jq stoatchat/stoatchat: Webhook tokens are freely accessible for users with read permissions.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-8684-rvfj-v3jq)
 - (`2025-02-10`) [GHSA-h7h6-7pxm-mc66 stoatchat/stoatchat: Nearby message fetch requests can be crafted to fetch entire message history.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-h7h6-7pxm-mc66)
+- (`2026-05-17`) [GHSA-xhww-5g9p-vvq5 stoatchat/stoatchat: Unauthenticated SSRF in January Proxy and Embed Endpoints.](https://github.com/stoatchat/stoatchat/security/advisories/GHSA-xhww-5g9p-vvq5)
+- (`2026-05-17`) [GHSA-q6j8-cm78-2rrg stoatchat/for-web: Stored XSS via "Trust Poisoning" of Opaque Origins (javascript:) in Link Safety Logic.](https://github.com/stoatchat/for-web/security/advisories/GHSA-q6j8-cm78-2rrg)
