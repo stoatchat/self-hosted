@@ -37,11 +37,11 @@ This repository contains configurations and instructions that can be used for de
   - [Insecurely Expose the Database](#insecurely-expose-the-database)
   - [Mongo Compatibility](#mongo-compatibility)
   - [KeyDB Compatibility](#keydb-compatibility)
-  - [Making Your Instance Invite-only](#making-your-instance-invite-only)
   - [Why ports 7881 and 50000-50100/udp aren't in the Caddyfile](#why-ports-7881-and-50000-50100udp-arent-in-the-caddyfile)
   - [Getting kicked on video enabled instances when turning on video](#getting-kicked-on-video-enabled-instances-when-turning-on-video)
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
+- [Guides](Guides.md)
 
 ## Deployment
 
@@ -223,49 +223,7 @@ docker compose up -d
 
 During configuration using `generate_config.sh` you will be asked if you'd like to place Stoat behind another reverse proxy. Enter `y` to configure for reverse proxy. This will expose your caddy on port 8880, and you can reverse proxy to <http://localhost:8880>
 
-> [!NOTE]
-> If you are using nginx as your reverse proxy, you will need to add the upgrade header configuration to allow websockets on /ws and /livekit, which are required for Stoat.
-> Example:
-> ```
-> server {
->     server_name stoat.example.com;
->
->     location / {
->         allow all;
->         proxy_pass http://localhost:1234;
->         proxy_set_header Host $server_name;
->         proxy_set_header X-Real-IP $remote_addr;
->         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
->         proxy_set_header X-Forwarded-Proto $scheme;
->     }
->
->     location /ws {
->         allow all;
->         proxy_pass http://localhost:1234;
->         proxy_http_version 1.1;
->         proxy_set_header Upgrade $http_upgrade;
->         proxy_set_header Connection "upgrade";
->         proxy_set_header Host $server_name;
->         proxy_set_header X-Real-IP $remote_addr;
->         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
->         proxy_set_header X-Forwarded-Proto $scheme;
->     }
->
->     location /livekit {
->         allow all;
->         proxy_pass http://localhost:1234;
->         proxy_http_version 1.1;
->         proxy_set_header Upgrade $http_upgrade;
->         proxy_set_header Connection "upgrade";
->         proxy_set_header Host $server_name;
->         proxy_set_header X-Real-IP $remote_addr;
->         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
->         proxy_set_header X-Forwarded-Proto $scheme;
->     }
->     . . . # The rest of your nginx configuration
-> }
-> ```
-
+See [guides](Guides.md) for more information about placing Stoat behind other reverse proxies.
 
 ### Insecurely Expose the Database
 
@@ -305,27 +263,6 @@ Some systems (including ARM systems) may not support the latest KeyDB version; y
 services:
   redis:
     image: valkey/valkey:8
-```
-
-### Making Your Instance Invite-only
-
-Add the following section to your `Revolt.toml` file:
-```toml
-[api.registration]
-# Whether an invite should be required for registration
-# See https://github.com/stoatchat/self-hosted#making-your-instance-invite-only
-invite_only = true
-```
-
-Create an invite:
-
-```bash
-# drop into mongo shell
-docker compose exec database mongosh
-
-# create the invite
-use revolt
-db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ```
 
 ### Why ports 7881 and 50000-50100/udp aren't in the Caddyfile
