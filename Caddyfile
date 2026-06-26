@@ -1,4 +1,14 @@
 {$HOSTNAME} {
+	route /.well-known/stoat.json {
+		uri strip_prefix /.well-known/stoat.json
+		header {
+			Access-Control-Allow-Origin *
+		}
+		file_server {
+			root /data/stoat.json
+		}
+	}
+
 	route /api* {
 		uri strip_prefix /api
 		reverse_proxy http://api:14702 {
