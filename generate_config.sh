@@ -177,8 +177,6 @@ else
     echo "Using old Livekit secrets..."
 fi
 
-GIFBOX="https://api.gifbox.me"
-
 # set hostname for Caddy and vite variables
 echo "HOSTNAME=$STOAT_HOSTNAME" > .env.web
 echo "REVOLT_PUBLIC_URL=https://$DOMAIN/api" >> .env.web
@@ -186,12 +184,11 @@ echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
 echo "VITE_WS_URL=wss://$DOMAIN/ws" >> .env.web
 echo "VITE_MEDIA_URL=https://$DOMAIN/autumn" >> .env.web
 echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
-echo "VITE_GIFBOX_URL=$GIFBOX" >> .env.web
 echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # client config
 mkdir -p data/caddy-data
-echo "{\"api\":\"https://$DOMAIN/api\",\"gifbox\":\"$GIFBOX\"}" > data/caddy-data/stoat.json
+echo "{\"api\":\"https://$DOMAIN/api\"}" > data/caddy-data/stoat.json
 
 # hostnames
 echo "# All secrets are stored in secrets.env" > Revolt.toml
