@@ -1,11 +1,11 @@
 {$HOSTNAME} {
-	route /.well-known/stoat.json {
-		uri strip_prefix /.well-known/stoat.json
+	route /.well-known/stoat {
+		uri strip_prefix /.well-known/stoat
 		header {
 			Access-Control-Allow-Origin *
 		}
 		file_server {
-			root /data/stoat.json
+			root /stoat.json
 		}
 	}
 

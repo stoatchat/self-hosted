@@ -187,8 +187,7 @@ echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
 echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # client config
-mkdir -p data/caddy-data
-echo "{\"api\":\"https://$DOMAIN/api\"}" > data/caddy-data/stoat.json
+echo -n "{\"api\":\"https://$DOMAIN/api\"}" > stoat.json
 
 # hostnames
 echo "# All secrets are stored in secrets.env" > Revolt.toml

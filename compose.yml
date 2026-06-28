@@ -70,6 +70,7 @@ services:
       - ./Caddyfile:/etc/caddy/Caddyfile
       - ./data/caddy-data:/data
       - ./data/caddy-config:/config
+      - ./stoat.json:/stoat.json
     networks:
       default:
         aliases:
