@@ -20,6 +20,7 @@ Below are guides provided by the core team and by the community. Contributions t
 - [Placing Stoat Behind Other Reverse Proxies](#placing-stoat-behind-other-reverse-proxies)
   - [NGINX](#nginx)
 - [Making Your Instance Invite-only](#making-your-instance-invite-only)
+- [Enabling the Gif Picker](#enabling-the-gif-picker)
 
 ## Placing Stoat Behind Other Reverse Proxies
 
@@ -149,3 +150,16 @@ docker compose exec database mongosh
 use revolt
 db.invites.insertOne({ _id: "enter_an_invite_code_here" })
 ```
+
+## Enabling the Gif Picker
+
+To enable the gif picker, you must create a Gifbox account and create an api key. Go to [gifbox.me](https://gifbox.me) and make an account. After creating an account and logging in, go to your account settings page by clicking your email in the top right. On your settings page, create an api key. Copy the api key and put it on the bottom of your secrets.env file like so:
+
+```bash
+
+REVOLT__API__SECURITY__TENOR_KEY='<yourapikey>'
+```
+
+Restart the stoat-gifbox service by running `docker compose down gifbox && docker compose up -d gifbox`.
+
+The gifpicker should now work.

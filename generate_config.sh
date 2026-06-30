@@ -50,11 +50,11 @@ if test -f "Revolt.toml"; then
         fi
         echo "Overwriting existing config."
         echo "Renaming Revolt.toml to Revolt.toml.old"
-        mv Revolt.toml Revolt.toml.old
+        mv Revolt.toml Revolt.toml.old || true
         echo "Renaming livekit.yml to livekit.yml.old"
-        mv livekit.yml livekit.yml.old
+        mv livekit.yml livekit.yml.old || true
         echo "Renaming compose.override.yml to compose.override.yml.old"
-        mv compose.override.yml compose.override.yml.old
+        mv compose.override.yml compose.override.yml.old || true
     else
         echo "Existing config found, in caution, this script will refuse to execute if you have existing config."
         if [ "$SECRETS_FOUND" -eq "0" ]; then
@@ -184,6 +184,7 @@ echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
 echo "VITE_WS_URL=wss://$DOMAIN/ws" >> .env.web
 echo "VITE_MEDIA_URL=https://$DOMAIN/autumn" >> .env.web
 echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
+echo "VITE_GIFBOX_URL=https://$DOMAIN/gifbox" >> .env.web
 echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # client config
@@ -200,6 +201,7 @@ echo "api = \"https://$DOMAIN/api\"" >> Revolt.toml
 echo "events = \"wss://$DOMAIN/ws\"" >> Revolt.toml
 echo "autumn = \"https://$DOMAIN/autumn\"" >> Revolt.toml
 echo "january = \"https://$DOMAIN/january\"" >> Revolt.toml
+echo "gifbox = \"https://$DOMAIN/gifbox\"" >> Revolt.toml
 
 # livekit hostname
 echo "" >> Revolt.toml
@@ -246,6 +248,8 @@ if [[ -n "$VIDEO_ENABLED" ]]; then
     echo "video_resolution = [1920, 1080]" >> Revolt.toml
     echo "video_aspect_ratio = [0.3, 10]" >> Revolt.toml
 fi
+
+echo "If you would like to enable the gif picker, please see the Guides section of the Readme"
 
 if [[ $IS_OVERWRITING -eq 1 ]]; then
     echo "Overwrote existing config. If any custom configuration was present in old Revolt.toml, you may now copy it over from Revolt.toml.old."
