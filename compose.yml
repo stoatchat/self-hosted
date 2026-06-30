@@ -78,7 +78,7 @@ services:
 
   # API server
   api:
-    image: ghcr.io/stoatchat/api:v0.13.6
+    image: ghcr.io/stoatchat/api:v0.13.8
     env_file: secrets.env
     depends_on:
       database:
@@ -95,7 +95,7 @@ services:
 
   # Events service
   events:
-    image: ghcr.io/stoatchat/events:v0.13.6
+    image: ghcr.io/stoatchat/events:v0.13.8
     env_file: secrets.env
     depends_on:
       database:
@@ -110,7 +110,7 @@ services:
 
   # File server
   autumn:
-    image: ghcr.io/stoatchat/file-server:v0.13.6
+    image: ghcr.io/stoatchat/file-server:v0.13.8
     env_file: secrets.env
     depends_on:
       database:
@@ -125,7 +125,7 @@ services:
 
   # Metadata and image proxy
   january:
-    image: ghcr.io/stoatchat/proxy:v0.13.6
+    image: ghcr.io/stoatchat/proxy:v0.13.8
     env_file: secrets.env
     volumes:
       - type: bind
@@ -135,7 +135,7 @@ services:
 
   # Tenor proxy
   gifbox:
-    image: ghcr.io/stoatchat/gifbox:v0.13.6
+    image: ghcr.io/stoatchat/gifbox:v0.13.8
     env_file: secrets.env
     volumes:
       - type: bind
@@ -145,7 +145,7 @@ services:
 
   # Regular task daemon
   crond:
-    image: ghcr.io/stoatchat/crond:v0.13.6
+    image: ghcr.io/stoatchat/crond:v0.13.8
     env_file: secrets.env
     depends_on:
       database:
@@ -160,7 +160,7 @@ services:
 
   # Push notification daemon
   pushd:
-    image: ghcr.io/stoatchat/pushd:v0.13.6
+    image: ghcr.io/stoatchat/pushd:v0.13.8
     env_file: secrets.env
     depends_on:
       database:
@@ -177,7 +177,7 @@ services:
 
    # Voice ingress daemon
   voice-ingress:
-    image: ghcr.io/stoatchat/voice-ingress:v0.13.6
+    image: ghcr.io/stoatchat/voice-ingress:v0.13.8
     env_file: secrets.env
     restart: always
     depends_on:
