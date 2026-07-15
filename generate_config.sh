@@ -179,13 +179,8 @@ fi
 
 # set hostname for Caddy and vite variables
 echo "HOSTNAME=$STOAT_HOSTNAME" > .env.web
-echo "REVOLT_PUBLIC_URL=https://$DOMAIN/api" >> .env.web
+echo "VITE_HOST=$DOMAIN" >> .env.web
 echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
-echo "VITE_WS_URL=wss://$DOMAIN/ws" >> .env.web
-echo "VITE_MEDIA_URL=https://$DOMAIN/autumn" >> .env.web
-echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
-echo "VITE_GIFBOX_URL=https://$DOMAIN/gifbox" >> .env.web
-echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
 
 # client config
 echo -n "{\"api\":\"https://$DOMAIN/api\"}" > stoat.json
