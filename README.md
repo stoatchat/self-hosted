@@ -15,17 +15,9 @@ Self-hosting Stoat using Docker
 
 This repository contains configurations and instructions that can be used for deploying a full instance of Stoat, including the back-end, web front-end, file server, and metadata and image proxy.
 
-> [!WARNING]
-> If you are updating an instance from before February 28, 2026, please consult the [notices section](#notices) at the bottom.
-
-> [!IMPORTANT]
-> A list of security advisories is [provided at the bottom](#security-advisories).
-
-> [!NOTE]
-> Please consult _[What can I do with Stoat and how do I self-host?](https://developers.stoat.chat/faq)_ on our developer site for information about licensing and brand use.
-
 ## Table of Contents
 
+- [Disclaimers and Information](#disclaimers-and-information)
 - [Deployment](#deployment)
   - [Securing your server](#securing-your-server)
   - [Configuring your domain](#configuring-your-domain)
@@ -42,6 +34,23 @@ This repository contains configurations and instructions that can be used for de
 - [Notices](#notices)
 - [Security Advisories](#security-advisories)
 - [Guides](Guides.md)
+
+## Disclaimers and Information
+
+> [!WARNING]
+> If you are updating an instance from before February 28, 2026, please consult the [notices section](#notices) at the bottom.
+
+> [!IMPORTANT]
+> A list of security advisories is [provided at the bottom](#security-advisories).
+
+> [!NOTE]
+> Currently, most official clients do not support self-hosted instances. The web client works well, and when you use the [PWA](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps/Guides/What_is_a_progressive_web_app) the experience is close to a native app. For more instructions regarding clients please see the [Guides](Guides.md) section of the readme.
+
+> [!NOTE]
+> Please consult _[What can I do with Stoat and how do I self-host?](https://developers.stoat.chat/faq)_ on our developer site for information about licensing and brand use.
+
+> [!TIP]
+> For guides on how to perform common configuration alterations like using NGINX or setting your instance to invite only, see the [Guides](Guides.md) section of the readme.
 
 ## Deployment
 
@@ -127,10 +136,18 @@ Your domain (or a subdomain) should point to the server's IP (A and AAAA records
 
 ### Install required dependencies
 
+
 ```bash
-# ensure Git and Docker are installed
+# ensure Git is installed
 apt-get update
 apt-get install ca-certificates curl git micro
+```
+
+> [!NOTE]
+> Installing docker is different per platform and this guide only covers installing on Ubuntu Server. You can find more about installing docker on other platforms [here](https://docs.docker.com/engine/install/).
+
+```bash
+# install docker
 install -m 0755 -d /etc/apt/keyrings
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
 chmod a+r /etc/apt/keyrings/docker.asc

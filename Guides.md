@@ -163,3 +163,15 @@ REVOLT__API__SECURITY__TENOR_KEY='<yourapikey>'
 Restart the stoat-gifbox service by running `docker compose down gifbox && docker compose up -d gifbox`.
 
 The gifpicker should now work.
+
+## Connecting with Official Clients
+
+> [!TIP]
+> Some unofficial clients support self-hosted instances. You can see a list of unofficial clients at [awesome-stoat](https://github.com/stoatchat/awesome-stoat). Unless stated, these are not officially endorsed. Proceed at your own risk.
+
+Currently, most clients do not support self-hosted instances that well. Herein are guides to connecting with each of the official apps that support self-hosted instances:
+
+### Stoat Desktop App
+
+The Stoat Desktop App supports self-hosted instances. To configure the app for self-hosted, you must launch the app with the `--force-server=https://your.domain` command line flag. You cannot have multiple clients running, as launching the app while another copy is running will result in nothing happening.
+
