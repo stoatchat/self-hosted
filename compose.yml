@@ -222,7 +222,7 @@ services:
 
   # Web App
   web:
-    # for-web v0.14.0
-    image: ghcr.io/stoatchat/for-web:c7d39d1
+    # for-web v0.14.1
+    image: ghcr.io/stoatchat/for-web:0c31cf0
     restart: always
     env_file: .env.web
