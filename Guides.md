@@ -148,7 +148,7 @@ docker compose exec database mongosh
 
 # create the invite
 use revolt
-db.invites.insertOne({ _id: "enter_an_invite_code_here" })
+db.account_invites.insertOne({ _id: "enter_an_invite_code_here" })
 ```
 
 ## Enabling the Gif Picker
