@@ -183,6 +183,7 @@ fi
 echo "HOSTNAME=$STOAT_HOSTNAME" > .env.web
 echo "VITE_HOST=$DOMAIN" >> .env.web
 echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
+echo "VITE_DEV_GIFBOX_URL=https://$DOMAIN/gifbox" >> .env.web
 
 # client config
 echo -n "{\"api\":\"https://$DOMAIN/api\"}" > stoat.json
