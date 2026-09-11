@@ -55,6 +55,8 @@ if test -f "Revolt.toml"; then
         mv livekit.yml livekit.yml.old || true
         echo "Renaming compose.override.yml to compose.override.yml.old"
         mv compose.override.yml compose.override.yml.old || true
+        echo "Renaming .env.web to .env.web.old"
+        mv .env.web .env.web.old || true
     else
         echo "Existing config found, in caution, this script will refuse to execute if you have existing config."
         if [ "$SECRETS_FOUND" -eq "0" ]; then
@@ -179,13 +181,9 @@ fi
 
 # set hostname for Caddy and vite variables
 echo "HOSTNAME=$STOAT_HOSTNAME" > .env.web
-echo "REVOLT_PUBLIC_URL=https://$DOMAIN/api" >> .env.web
+echo "VITE_HOST=$DOMAIN" >> .env.web
 echo "VITE_API_URL=https://$DOMAIN/api" >> .env.web
-echo "VITE_WS_URL=wss://$DOMAIN/ws" >> .env.web
-echo "VITE_MEDIA_URL=https://$DOMAIN/autumn" >> .env.web
-echo "VITE_PROXY_URL=https://$DOMAIN/january" >> .env.web
-echo "VITE_GIFBOX_URL=https://$DOMAIN/gifbox" >> .env.web
-echo "VITE_CFG_ENABLE_VIDEO=$VIDEO_ENABLED" >> .env.web
+echo "VITE_DEV_GIFBOX_URL=https://$DOMAIN/gifbox" >> .env.web
 
 # client config
 echo -n "{\"api\":\"https://$DOMAIN/api\"}" > stoat.json
