@@ -37,7 +37,7 @@ services:
 
   # MinIO: S3-compatible storage server
   minio:
-    image: docker.io/minio/minio
+    image: docker.io/pgsty/silo
     command: server /data
     volumes:
       - ./data/minio:/data
@@ -207,7 +207,7 @@ services:
 
   # Create buckets for minio.
   createbuckets:
-    image: docker.io/minio/mc
+    image: docker.io/pgsty/mc
     depends_on:
       - minio
     entrypoint: >
