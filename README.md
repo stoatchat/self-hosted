@@ -382,6 +382,13 @@ Due to an incomplete implementation, Stoat will kick any user that attempts to s
 >
 > All of your secrets can be found in `Revolt.toml` and should be copied to your `secrets.env` file. After all 5 secrets are copied over, you are safe to run `generate_config.sh` to get new configuration options.
 
+> [!IMPORTANT]
+> If you deployed Stoat before September 17th 2026 your minio environment will automatically migrate to silo. Stoat maintainers recommend backing up your minio directory. In the default configuration, this directory is at `data/minio`.
+>
+> ```bash
+> sudo cp data/minio data/minio-bak
+> ```
+
 ## Security Advisories
 
 You can find information about security advisories on Stoat repositories on Github. Listed below are the latest versions that contain remediations, and links to the security advisory pages.
