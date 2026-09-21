@@ -13,6 +13,7 @@ usage() {
 
 loadSecrets() {
     SECRETS_FOUND=1
+    chmod 600 secrets.env
     set -a && source secrets.env && set +a
 }
 
