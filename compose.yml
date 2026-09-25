@@ -71,6 +71,7 @@ services:
       - ./data/caddy-data:/data
       - ./data/caddy-config:/config
       - ./stoat.json:/stoat.json
+      - ./assets:/srv/assets
     networks:
       default:
         aliases:
