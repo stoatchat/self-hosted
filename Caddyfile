@@ -58,5 +58,11 @@
 		}
 	}
 
+	route /assets* {
+		uri strip_prefix /assets
+		root * /srv/assets
+		file_server
+	}
+
 	reverse_proxy http://web:5000
 }
