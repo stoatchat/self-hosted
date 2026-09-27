@@ -195,7 +195,7 @@ The easiest way to configure custom assets is by forking the whitelabel asset re
 
 ### Setting Up the Submodule
 
-Once you have forked the whitelabel assets and uploaded your assets, you must set up the assets submodule with your custom fork.
+Once you have forked the whitelabel assets and uploaded your assets, you must set up the assets submodule with your custom fork. If your fork is private, you may need to setup access to your fork. This is not covered by this guide.
 
 ```bash
 cd assets
