@@ -21,6 +21,7 @@ Below are guides provided by the core team and by the community. Contributions t
   - [NGINX](#nginx)
 - [Making Your Instance Invite-only](#making-your-instance-invite-only)
 - [Enabling the Gif Picker](#enabling-the-gif-picker)
+- [Custom Assets](#custom-assets)
 
 ## Placing Stoat Behind Other Reverse Proxies
 
@@ -175,3 +176,24 @@ Currently, most clients do not support self-hosted instances that well. Herein a
 
 The Stoat Desktop App supports self-hosted instances. To configure the app for self-hosted, you must launch the app with the `--force-server=https://your.domain` command line flag. You cannot have multiple clients running, as launching the app while another copy is running will result in nothing happening.
 
+## Custom Assets
+
+> [!IMPORTANT]
+> Custom assets are not yet supported in self-hosted Stoat. This guide will prepare you for when custom assets are officially supported.
+
+### Forking the Whitelabel Assets
+
+The easiest way to configure custom assets is by forking the whitelabel asset repository and uploading your own assets. The fork can be private or public. The whitelabel assets repository can be found at https://github.com/stoatchat/whitelabel-assets.
+
+### Setting Up the Submodule
+
+Once you have forked the whitelabel assets and uploaded your assets, you must set up the assets submodule with your custom fork.
+
+```bash
+cd assets
+git remote add custom https://github.com/your-custom/whitelabel-assets
+git fetch custom
+git checkout custom/main
+```
+
+The repository is configured to never overwrite your custom assets url; however, sometimes we may add additional assets to the whitelabel assets repository. All assets are required to run for-web, so you will need to keep track of these additional assets on your fork.
