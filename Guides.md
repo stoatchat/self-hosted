@@ -181,6 +181,14 @@ The Stoat Desktop App supports self-hosted instances. To configure the app for s
 > [!IMPORTANT]
 > Custom assets are not yet supported in self-hosted Stoat. This guide will prepare you for when custom assets are officially supported.
 
+### Setup
+
+First, ensure the assets directory is populated and configured.
+
+```bash
+git -c submodule."assets".update=checkout submodule update --init assets
+```
+
 ### Forking the Whitelabel Assets
 
 The easiest way to configure custom assets is by forking the whitelabel asset repository and uploading your own assets. The fork can be private or public. The whitelabel assets repository can be found at https://github.com/stoatchat/whitelabel-assets.
