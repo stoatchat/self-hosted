@@ -61,7 +61,7 @@
 	route /assets/* {
 		uri strip_prefix /assets/
 		header {
-            Cache-Control no-cache
+			Cache-Control no-cache
         }
 
 		file_server {
