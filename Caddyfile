@@ -61,7 +61,6 @@
 	route /assets/* {
 		uri strip_prefix /assets/
 		header {
-            Access-Control-Allow-Origin *
             Cache-Control no-cache
         }
 
