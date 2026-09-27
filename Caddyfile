@@ -62,7 +62,7 @@
 		uri strip_prefix /assets/
 		header {
 			Cache-Control no-cache
-        }
+		}
 
 		file_server {
 			root /srv/assets
