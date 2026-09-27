@@ -58,10 +58,16 @@
 		}
 	}
 
-	route /assets* {
-		uri strip_prefix /assets
-		root * /srv/assets
-		file_server
+	route /assets/* {
+		uri strip_prefix /assets/
+		header {
+            Access-Control-Allow-Origin *
+            Cache-Control no-cache
+        }
+
+		file_server {
+			root /srv/assets
+		}
 	}
 
 	reverse_proxy http://web:5000
