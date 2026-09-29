@@ -58,8 +58,8 @@
 		}
 	}
 
-	route /assets/* {
-		uri strip_prefix /assets/
+	route /stoat-assets/* {
+		uri strip_prefix /stoat-assets/
 		header {
 			Cache-Control no-cache
 		}
