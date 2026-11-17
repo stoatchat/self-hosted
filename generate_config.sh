@@ -123,6 +123,17 @@ else
     VIDEO_ENABLED=true
 fi
 
+read -rp "Would you like to provide your own assets? [y/N]: "
+if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
+    echo "Yes received. Skipping whitelabel asset install."
+    echo "See Guides.md for instructions on providing your own assets."
+else
+    echo "No received. Configuring whitelabel assets."
+    git submodule deinit -f assets
+    git -c submodule."assets".update=checkout submodule update --init assets
+fi
+
+
 # Generate secrets
 echo "Generating secrets..."
 if [ "$REVOLT__PUSHD__VAPID__PRIVATE_KEY" = "" ]; then 

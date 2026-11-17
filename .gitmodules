@@ -1,0 +1,4 @@
+[submodule "assets"]
+	path = assets
+	url = https://github.com/stoatchat/whitelabel-assets.git
+	update = none
