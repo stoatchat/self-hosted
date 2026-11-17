@@ -134,8 +134,8 @@ if [ "$REVOLT__PUSHD__VAPID__PRIVATE_KEY" = "" ]; then
     fi
     echo "Generating Pushd VAPID secrets..."
     openssl ecparam -name prime256v1 -genkey -noout -out vapid_private.pem
-    REVOLT__PUSHD__VAPID__PRIVATE_KEY=$(base64 -i vapid_private.pem | tr -d '\n' | tr -d '=')
-    REVOLT__PUSHD__VAPID__PUBLIC_KEY=$(openssl ec -in vapid_private.pem -outform DER|tail --bytes 65|base64|tr '/+' '_-'|tr -d '\n'|tr -d '=')
+    REVOLT__PUSHD__VAPID__PRIVATE_KEY=$(base64 -i vapid_private.pem | tr '/+' '_-' | tr -d '\n=')
+    REVOLT__PUSHD__VAPID__PUBLIC_KEY=$(openssl ec -in vapid_private.pem -outform DER | tail --bytes 65 | base64 | tr '/+' '_-' | tr -d '\n=')
     rm vapid_private.pem
     echo "" >> secrets.env
     printf "REVOLT__PUSHD__VAPID__PRIVATE_KEY='%s'\n" $REVOLT__PUSHD__VAPID__PRIVATE_KEY >> secrets.env
