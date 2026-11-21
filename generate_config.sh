@@ -6,6 +6,9 @@ IS_OVERWRITING=0
 DOMAIN=
 VIDEO_ENABLED=
 
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
 usage() {
     echo "Usage: ./generate_config.sh [--overwrite] DOMAIN"
     exit 1
@@ -123,6 +126,25 @@ else
     VIDEO_ENABLED=true
 fi
 
+read -rp "Would you like to provide your own assets? [y/N]: "
+if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
+    echo "Yes received. Skipping whitelabel asset install."
+    echo "See Guides.md for instructions on providing your own assets."
+elif [ -e assets/.git ]; then
+    # Detect custom or modified checkouts by commit
+    pinned=$(git ls-tree HEAD assets | awk '{print $3}')
+    current=$(git -C assets rev-parse HEAD 2>/dev/null || true)
+    if [ -n "$current" ] && [ "$current" = "$pinned" ] && git -C assets diff --quiet && git -C assets diff --cached --quiet; then
+        echo "Updating whitelabel assets..."
+        git -c submodule."assets".update=checkout submodule update --init assets
+    else
+        echo -e "${YELLOW}Custom or modified assets checkout found, leaving it alone.${NC}"
+        echo -e "${YELLOW}To restore whitelabel assets, remove ./assets and re-run.${NC}"
+    fi
+else
+    git -c submodule."assets".update=checkout submodule update --init assets
+fi
+
 # Generate secrets
 echo "Generating secrets..."
 if [ "$REVOLT__PUSHD__VAPID__PRIVATE_KEY" = "" ]; then 
@@ -201,6 +223,11 @@ echo "events = \"wss://$DOMAIN/ws\"" >> Revolt.toml
 echo "autumn = \"https://$DOMAIN/autumn\"" >> Revolt.toml
 echo "january = \"https://$DOMAIN/january\"" >> Revolt.toml
 echo "gifbox = \"https://$DOMAIN/gifbox\"" >> Revolt.toml
+
+# Assets
+echo "" >> Revolt.toml
+echo "[features]" >> Revolt.toml
+echo "assets = \"https://$DOMAIN/stoat-assets\"" >> Revolt.toml
 
 # livekit hostname
 echo "" >> Revolt.toml
