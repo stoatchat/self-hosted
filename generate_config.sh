@@ -131,15 +131,18 @@ if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
     echo "Yes received. Skipping whitelabel asset install."
     echo "See Guides.md for instructions on providing your own assets."
 elif [ -e assets/.git ]; then
-    if git -C assets diff --quiet && git -C assets diff --cached --quiet; then
+    # Detect custom or modified checkouts by commit
+    pinned=$(git ls-tree HEAD assets | awk '{print $3}')
+    current=$(git -C assets rev-parse HEAD 2>/dev/null || true)
+    if [ -n "$current" ] && [ "$current" = "$pinned" ] && git -C assets diff --quiet && git -C assets diff --cached --quiet; then
         echo "Updating whitelabel assets..."
-        git submodule update --init --remote assets
+        git -c submodule."assets".update=checkout submodule update --init assets
     else
-        echo -e "${YELLOW}Custom assets checkout found, leaving it alone.${NC}"
+        echo -e "${YELLOW}Custom or modified assets checkout found, leaving it alone.${NC}"
         echo -e "${YELLOW}To restore whitelabel assets, remove ./assets and re-run.${NC}"
     fi
 else
-    git submodule update --init assets
+    git -c submodule."assets".update=checkout submodule update --init assets
 fi
 
 # Generate secrets
