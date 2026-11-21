@@ -6,6 +6,9 @@ IS_OVERWRITING=0
 DOMAIN=
 VIDEO_ENABLED=
 
+YELLOW='\033[0;33m'
+NC='\033[0m'
+
 usage() {
     echo "Usage: ./generate_config.sh [--overwrite] DOMAIN"
     exit 1
@@ -127,10 +130,16 @@ read -rp "Would you like to provide your own assets? [y/N]: "
 if [ "$REPLY" = "y" ] || [ "$REPLY" = "Y" ]; then
     echo "Yes received. Skipping whitelabel asset install."
     echo "See Guides.md for instructions on providing your own assets."
+elif [ -e assets/.git ]; then
+    if git -C assets diff --quiet && git -C assets diff --cached --quiet; then
+        echo "Updating whitelabel assets..."
+        git submodule update --init --remote assets
+    else
+        echo -e "${YELLOW}Custom assets checkout found, leaving it alone.${NC}"
+        echo -e "${YELLOW}To restore whitelabel assets, remove ./assets and re-run.${NC}"
+    fi
 else
-    echo "No received. Configuring whitelabel assets."
-    git submodule deinit -f assets
-    git -c submodule."assets".update=checkout submodule update --init assets
+    git submodule update --init assets
 fi
 
 # Generate secrets
