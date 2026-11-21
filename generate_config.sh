@@ -133,7 +133,6 @@ else
     git -c submodule."assets".update=checkout submodule update --init assets
 fi
 
-
 # Generate secrets
 echo "Generating secrets..."
 if [ "$REVOLT__PUSHD__VAPID__PRIVATE_KEY" = "" ]; then 
@@ -212,6 +211,11 @@ echo "events = \"wss://$DOMAIN/ws\"" >> Revolt.toml
 echo "autumn = \"https://$DOMAIN/autumn\"" >> Revolt.toml
 echo "january = \"https://$DOMAIN/january\"" >> Revolt.toml
 echo "gifbox = \"https://$DOMAIN/gifbox\"" >> Revolt.toml
+
+# Assets
+echo "" >> Revolt.toml
+echo "[features]" >> Revolt.toml
+echo "assets = \"https://$DOMAIN/stoat-assets\"" >> Revolt.toml
 
 # livekit hostname
 echo "" >> Revolt.toml
